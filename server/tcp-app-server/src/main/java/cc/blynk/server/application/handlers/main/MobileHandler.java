@@ -6,6 +6,7 @@ import cc.blynk.server.application.handlers.main.logic.MobileActivateDashboardLo
 import cc.blynk.server.application.handlers.main.logic.MobileAddPushLogic;
 import cc.blynk.server.application.handlers.main.logic.MobileAssignTokenLogic;
 import cc.blynk.server.application.handlers.main.logic.MobileDeActivateDashboardLogic;
+import cc.blynk.server.application.handlers.main.logic.MobileDeleteAccountLogic;
 import cc.blynk.server.application.handlers.main.logic.MobileGetCloneCodeLogic;
 import cc.blynk.server.application.handlers.main.logic.MobileGetEnergyLogic;
 import cc.blynk.server.application.handlers.main.logic.MobileGetProjectByClonedTokenLogic;
@@ -76,6 +77,7 @@ import static cc.blynk.server.core.protocol.enums.Command.CREATE_TAG;
 import static cc.blynk.server.core.protocol.enums.Command.CREATE_TILE_TEMPLATE;
 import static cc.blynk.server.core.protocol.enums.Command.CREATE_WIDGET;
 import static cc.blynk.server.core.protocol.enums.Command.DEACTIVATE_DASHBOARD;
+import static cc.blynk.server.core.protocol.enums.Command.DELETE_ACCOUNT;
 import static cc.blynk.server.core.protocol.enums.Command.DELETE_APP;
 import static cc.blynk.server.core.protocol.enums.Command.DELETE_DASH;
 import static cc.blynk.server.core.protocol.enums.Command.DELETE_DEVICE;
@@ -138,6 +140,7 @@ public class MobileHandler extends BaseSimpleChannelInboundHandler<StringMessage
     private MobileMailLogic mailLogic;
     private MobilePurchaseLogic purchaseLogic;
     private MobileDeleteAppLogic deleteAppLogic;
+    private MobileDeleteAccountLogic deleteAccountLogic;
     private MobileMailQRsLogic mailQRsLogic;
     private MobileGetProjectByClonedTokenLogic getProjectByCloneCodeLogic;
 
@@ -357,6 +360,12 @@ public class MobileHandler extends BaseSimpleChannelInboundHandler<StringMessage
                 break;
             case EXPORT_REPORT :
                 MobileExportReportLogic.messageReceived(holder, ctx, state.user, msg);
+                break;
+            case DELETE_ACCOUNT :
+                if (deleteAccountLogic == null) {
+                    this.deleteAccountLogic = new MobileDeleteAccountLogic(holder);
+                }
+                deleteAccountLogic.messageReceived(ctx, state.user, msg);
                 break;
         }
     }

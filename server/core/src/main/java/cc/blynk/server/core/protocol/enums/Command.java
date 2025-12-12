@@ -131,6 +131,9 @@ public final class Command {
     public static final short HTTP_CLONE = 93;
     public static final short HTTP_TOTAL = 94;
 
+    //account management
+    public static final short DELETE_ACCOUNT = 95;
+
     //right now we have less than 100 commands
     public static final int LAST_COMMAND_INDEX = 100;
 
@@ -209,6 +212,7 @@ public final class Command {
             Map.entry(DELETE_REPORT, "deleteReport"),
             Map.entry(EXPORT_REPORT, "exportReport"),
             Map.entry(RESET_PASSWORD, "resetPass"),
+            Map.entry(DELETE_ACCOUNT, "DeleteAccount"),
             Map.entry(HTTP_IS_HARDWARE_CONNECTED, "HttpIsHardwareConnected"),
             Map.entry(HTTP_IS_APP_CONNECTED, "HttpIsAppConnected"),
             Map.entry(HTTP_GET_PIN_DATA, "HttpGetPinData"),
