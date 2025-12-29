@@ -4,6 +4,7 @@ import cc.blynk.server.Holder;
 import cc.blynk.server.core.reporting.average.AverageAggregatorProcessor;
 import cc.blynk.server.servers.BaseServer;
 import cc.blynk.server.workers.CertificateRenewalWorker;
+import cc.blynk.server.workers.DeletedAccountsCleanupWorker;
 import cc.blynk.server.workers.HistoryGraphUnusedPinDataCleanerWorker;
 import cc.blynk.server.workers.ProfileSaverWorker;
 import cc.blynk.server.workers.ReportingTruncateWorker;
@@ -84,6 +85,11 @@ final class JobLauncher {
 
         //once every week
         scheduler.scheduleAtFixedRate(reportingTruncateWorker, 1, 24 * 7, HOURS);
+
+        // Cleanup permanently deleted accounts after 5-day retention period
+        // Runs once per day
+        var deletedAccountsCleanup = new DeletedAccountsCleanupWorker(holder.props.getProperty("data.folder"));
+        scheduler.scheduleAtFixedRate(deletedAccountsCleanup, 1, 1, DAYS);
 
         //millis we need to wait to start scheduler at the beginning of a second.
         startDelay = 1000 - (System.currentTimeMillis() % 1000);

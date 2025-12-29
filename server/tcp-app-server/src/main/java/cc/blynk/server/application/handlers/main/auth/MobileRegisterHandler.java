@@ -95,11 +95,11 @@ public class MobileRegisterHandler extends SimpleChannelInboundHandler<RegisterM
 
         log.info("Registered {}.", email);
 
-        //sending greeting email only for Blynk apps
-        if (AppNameUtil.BLYNK.equals(appName)) {
+        //sending greeting email for supported apps
+        if (AppNameUtil.BLYNK.equals(appName) || "Plynx".equalsIgnoreCase(appName)) {
             blockingIOProcessor.execute(() -> {
                 try {
-                    mailWrapper.sendHtml(email, "Get started with Blynk", emailBody);
+                    mailWrapper.sendHtml(email, "Welcome to Plynx!", emailBody);
                 } catch (Exception e) {
                     log.warn("Error sending greeting email for {}.", email);
                 }

@@ -2,158 +2,172 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta name="viewport" content="width=device-width"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Reset Your Password</title>
     <style type="text/css">
         * {
             margin: 0;
             padding: 0;
-            font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
-            font-size: 100%;
-            line-height: 1.6;
+            box-sizing: border-box;
         }
-
-        img {
-            max-width: 100%;
-        }
-
+        
         body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #F2F2F7;
+            color: #1C1C1E;
+            line-height: 1.6;
             -webkit-font-smoothing: antialiased;
-            -webkit-text-size-adjust: none;
-            width: 100% !important;
-            height: 100%;
         }
-
-        a {
-            color: #348eda;
-        }
-
-        .btn-primary {
-            text-decoration: none;
-            color: #FFF;
-            background-color: #24C48E;
-            border: solid #24C48E;
-            border-width: 10px 20px;
-            line-height: 1;
-            font-weight: bold;
-            text-align: center;
-            cursor: pointer;
-            display: inline-block;
-            border-radius: 25px;
-        }
-
-        .padding {
-            padding: 10px 0;
-        }
-
-        table.body-wrap {
-            width: 100%;
-            padding: 20px;
-        }
-
-        table.body-wrap .container {
-            border: 1px solid #f0f0f0;
-        }
-
-        .footer-wrap .container p {
-            font-size: 12px;
-            color: #666;
-
-        }
-
-        table.footer-wrap a {
-            color: #999;
-        }
-
-        h1, h2, h3 {
-            font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-            color: #000;
-            margin: 40px 0 10px;
-            line-height: 1.2;
-            font-weight: 200;
-        }
-
-        h1 {
-            font-size: 36px;
-        }
-
-        h2 {
-            font-size: 28px;
-        }
-
-        h3 {
-            font-size: 22px;
-        }
-
-        p, ul, ol {
-            margin-bottom: 10px;
-            font-weight: normal;
-            font-size: 14px;
-        }
-
-        ul li, ol li {
-            margin-left: 5px;
-            list-style-position: inside;
-        }
-
-        .container {
-            display: block !important;
-            max-width: 600px !important;
-            margin: 0 auto !important; /* makes it centered */
-            clear: both !important;
-        }
-
-        .body-wrap .container {
-            padding: 20px;
-        }
-
-        .content {
+        
+        .email-container {
             max-width: 600px;
             margin: 0 auto;
-            display: block;
+            padding: 40px 20px;
         }
-
-        .content table {
-            width: 100%;
+        
+        .email-card {
+            background: #FFFFFF;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        
+        .email-header {
+            background: linear-gradient(135deg, #00C9A7 0%, #00A389 100%);
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 32px;
+            font-weight: 700;
+            color: #FFFFFF;
+            letter-spacing: -0.5px;
+        }
+        
+        .email-body {
+            padding: 40px 30px;
+        }
+        
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1C1C1E;
+            margin-bottom: 16px;
+        }
+        
+        p {
+            font-size: 16px;
+            color: #3C3C43;
+            margin-bottom: 20px;
+        }
+        
+        .btn-primary {
+            display: inline-block;
+            background: linear-gradient(135deg, #00C9A7 0%, #00A389 100%);
+            color: #FFFFFF !important;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 16px 32px;
+            border-radius: 12px;
+            margin: 20px 0;
+            transition: transform 0.2s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+        
+        .note {
+            font-size: 14px;
+            color: #8E8E93;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #E5E5EA;
+        }
+        
+        .email-footer {
+            background: #F2F2F7;
+            padding: 24px 30px;
+            text-align: center;
+        }
+        
+        .footer-text {
+            font-size: 12px;
+            color: #8E8E93;
+        }
+        
+        .footer-links a {
+            color: #00C9A7;
+            text-decoration: none;
+            margin: 0 8px;
+        }
+        
+        .icon-wrapper {
+            background: rgba(255, 255, 255, 0.2);
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        
+        .qr-note {
+            background: #F2F2F7;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+        
+        .qr-note p {
+            margin: 0;
+            font-size: 14px;
+            color: #3C3C43;
         }
     </style>
 </head>
-
-<body bgcolor="#f6f6f6">
-
-<table class="body-wrap" bgcolor="#f6f6f6">
-    <tr>
-        <td></td>
-        <td class="container" bgcolor="#FFFFFF">
-            <div class="content">
-                <table>
-                    <tr>
-                        <td>
-                            <p>Hi there,</p>
-
-                            <p>We got a request to reset your {PRODUCT_NAME} password.
-                            If you didn't request password change simply ignore it, otherwise click on the button below from <b>your smartphone or tablet</b>
-                                and select {PRODUCT_NAME} app.
-                            </p>
-                            <table>
-                                <tr>
-                                    <td class="padding">
-                                        <p><a href="{RESET_URL}" class="btn-primary">Reset Now</a></p>
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <p>You can also scan the attached QR code from {PRODUCT_NAME} app.</p>
-
-                            <p>Yours, {PRODUCT_NAME} team.</p>
-                        </td>
-                    </tr>
-                </table>
+<body>
+    <div class="email-container">
+        <div class="email-card">
+            <div class="email-header">
+                <div class="icon-wrapper">
+                    <span style="font-size: 28px;">🔐</span>
+                </div>
+                <div class="logo">{PRODUCT_NAME}</div>
             </div>
-        </td>
-        <td></td>
-    </tr>
-</table>
-
+            
+            <div class="email-body">
+                <h1>Reset Your Password</h1>
+                
+                <p>Hi there,</p>
+                
+                <p>We received a request to reset your {PRODUCT_NAME} password. If you didn't make this request, you can safely ignore this email.</p>
+                
+                <p>To reset your password, tap the button below from your <strong>smartphone or tablet</strong>:</p>
+                
+                <p style="text-align: center;">
+                    <a href="{RESET_URL}" class="btn-primary">Reset Password</a>
+                </p>
+                
+                <div class="qr-note">
+                    <p>📱 You can also scan the attached QR code from the {PRODUCT_NAME} app to reset your password.</p>
+                </div>
+                
+                <p class="note">This link will expire in 24 hours. If you didn't request a password reset, please ignore this email or contact support if you have concerns.</p>
+            </div>
+            
+            <div class="email-footer">
+                <p class="footer-text">© 2025 {PRODUCT_NAME}. All rights reserved.</p>
+                <p class="footer-links">
+                    <a href="https://plynx.cc">Website</a> •
+                    <a href="https://plynx.cc/support">Support</a>
+                </p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

@@ -2,172 +2,303 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta name="viewport" content="width=device-width"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Welcome to Plynx!</title>
     <style type="text/css">
         * {
             margin: 0;
             padding: 0;
-            font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
-            font-size: 100%;
-            line-height: 1.6;
+            box-sizing: border-box;
         }
-
+        
         body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #F2F2F7;
+            color: #1C1C1E;
+            line-height: 1.6;
             -webkit-font-smoothing: antialiased;
-            -webkit-text-size-adjust: none;
-            width: 100% !important;
-            height: 100%;
         }
-
-        a {
-            color: #348eda;
-        }
-
-        .btn-primary {
-            text-decoration: none;
-            color: #FFF;
-            background-color: #24C48E;
-            border: solid #24C48E;
-            border-width: 10px 20px;
-            line-height: 1;
-            font-weight: bold;
-            text-align: center;
-            cursor: pointer;
-            display: inline-block;
-            border-radius: 25px;
-        }
-
-        .padding {
-            padding: 10px 0;
-        }
-
-        table.body-wrap {
-            width: 100%;
-            padding: 20px;
-        }
-
-        table.body-wrap .container {
-            border: 1px solid #f0f0f0;
-        }
-
-        .footer-wrap .container p {
-            font-size: 12px;
-            color: #666;
-
-        }
-
-        table.footer-wrap a {
-            color: #999;
-        }
-
-        h1, h2, h3 {
-            font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-            color: #000;
-            margin: 40px 0 10px;
-            line-height: 1.2;
-            font-weight: 200;
-        }
-
-        h3 {
-            font-size: 22px;
-        }
-
-        p, ul, ol {
-            margin-bottom: 10px;
-            font-weight: normal;
-            font-size: 14px;
-        }
-
-        ul li, ol li {
-            margin-left: 5px;
-            list-style-position: inside;
-        }
-
-        .container {
-            display: block !important;
-            max-width: 600px !important;
-            margin: 0 auto !important; /* makes it centered */
-            clear: both !important;
-        }
-
-        .body-wrap .container {
-            padding: 20px;
-        }
-
-        .content {
+        
+        .email-container {
             max-width: 600px;
             margin: 0 auto;
-            display: block;
+            padding: 40px 20px;
         }
-
-        .content table {
-            width: 100%;
+        
+        .email-card {
+            background: #FFFFFF;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        
+        .email-header {
+            background: linear-gradient(135deg, #00C9A7 0%, #00A389 100%);
+            padding: 50px 30px;
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 36px;
+            font-weight: 700;
+            color: #FFFFFF;
+            letter-spacing: -0.5px;
+        }
+        
+        .tagline {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 8px;
+        }
+        
+        .email-body {
+            padding: 40px 30px;
+        }
+        
+        h1 {
+            font-size: 26px;
+            font-weight: 600;
+            color: #1C1C1E;
+            margin-bottom: 16px;
+        }
+        
+        p {
+            font-size: 16px;
+            color: #3C3C43;
+            margin-bottom: 20px;
+        }
+        
+        .welcome-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(0, 201, 167, 0.1);
+            color: #00A389;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .feature-list {
+            background: #F2F2F7;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 24px 0;
+        }
+        
+        .feature-list h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1C1C1E;
+            margin-bottom: 16px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        
+        .feature-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+            font-size: 16px;
+        }
+        
+        .feature-text {
+            font-size: 14px;
+            color: #3C3C43;
+        }
+        
+        .btn-primary {
+            display: inline-block;
+            background: linear-gradient(135deg, #00C9A7 0%, #00A389 100%);
+            color: #FFFFFF !important;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 16px 32px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        .steps-container {
+            margin: 24px 0;
+        }
+        
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .step-number {
+            background: #00C9A7;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+        
+        .step-content h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1C1C1E;
+            margin-bottom: 4px;
+        }
+        
+        .step-content p {
+            font-size: 14px;
+            color: #8E8E93;
+            margin: 0;
+        }
+        
+        .note {
+            font-size: 14px;
+            color: #8E8E93;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #E5E5EA;
+        }
+        
+        .email-footer {
+            background: #F2F2F7;
+            padding: 24px 30px;
+            text-align: center;
+        }
+        
+        .footer-text {
+            font-size: 12px;
+            color: #8E8E93;
+        }
+        
+        .footer-links a {
+            color: #00C9A7;
+            text-decoration: none;
+            margin: 0 8px;
+        }
+        
+        .icon-wrapper {
+            background: rgba(255, 255, 255, 0.2);
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .social-links {
+            margin-top: 16px;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            margin: 0 8px;
+            color: #8E8E93;
+            text-decoration: none;
         }
     </style>
 </head>
-
-<body bgcolor="#f6f6f6">
-
-<table class="body-wrap" bgcolor="#f6f6f6">
-    <tr>
-        <td></td>
-        <td class="container" bgcolor="#FFFFFF">
-            <div class="content">
-                <table>
-                    <tr>
-                        <td>
-                            <p>Hi there,</p>
-
-                            <p>Welcome to Blynk, a platform to build your next awesome IOT project.</p>
-                            <!--
-                            <p>First of all, please confirm your email address:</p>
-                            <table>
-                                <tr>
-                                    <td class="padding">
-                                        <p><a href="{RESET_URL}" class="btn-primary">Confirm Email</a></p>
-                                    </td>
-                                </tr>
-                            </table>
-                            -->
-                            <h3>Get Started:</h3>
-                            <ol>
-                                <li>Install Blynk Library. <a href="http://help.blynk.cc/getting-started-library-auth-token-code-examples/how-to-install-blynk-library-for-arduino">Here is</a> a step-by-step guide on how to do that;</li>
-                                <li>Check <a href="https://examples.blynk.cc/">Blynk examples</a> for your hardware;</li>
-                            </ol>
-
-                            <h3>Learn Blynk Basics:</h3>
-                            <ul>
-                                <li><a href="https://www.youtube.com/watch?v=egGs_jSIKbc">How to read any sensor with Blynk app (for example: DHT11, DHT22, etc)</a></li>
-                                <li><a href="https://www.youtube.com/watch?v=iueWEkM6cuQ">What is virtual pins and how to use it?</a></li>
-                                <li><a href="https://www.youtube.com/watch?v=LJ3ic8C8CcA">Blynking LED on Raspberry Pi</a></li>
-                                <li><a href="https://www.youtube.com/watch?v=fgzvoan_3_w">Control Arduino over USB with Blynk app</a></li>
-                                <li><a href="https://www.youtube.com/watch?v=FhS44hGk1Lc">Control multiple devices with Blynk app (Arduino Mega and nodeMCU)</a></li>
-                                <li><a href="https://www.youtube.com/watch?v=33ynNkvfvWU">How to install Local Blynk Server</a></li>
-                            </ul>
-
-                            <h3>Have Questions?</h3>
-                            <p>
-                                Post to our friendly <a href="https://community.blynk.cc/">community</a> with thousands of other developers.
-                                <br>
-                                Read full Blynk documentation <a href="http://docs.blynk.cc/">here</a>.
-                                <br>
-                            <br>
-                            Enjoy Blynking!
-                            </p>
-                            <p>
-                                --
-                                <br>
-                                Pavel and Blynk Team
-                            </p>
-
-                        </td>
-                    </tr>
-                </table>
+<body>
+    <div class="email-container">
+        <div class="email-card">
+            <div class="email-header">
+                <div class="icon-wrapper">
+                    <span style="font-size: 40px;">🏠</span>
+                </div>
+                <div class="logo">{PRODUCT_NAME}</div>
+                <div class="tagline">Smart Home IoT Platform</div>
             </div>
-        </td>
-        <td></td>
-    </tr>
-</table>
+            
+            <div class="email-body">
+                <span class="welcome-badge">🎉 Welcome Aboard!</span>
+                
+                <h1>Your account is ready!</h1>
+                
+                <p>Thank you for joining {PRODUCT_NAME}! You're now part of a community of makers, hobbyists, and IoT enthusiasts building amazing smart home projects.</p>
+                
+                <div class="steps-container">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Create Your First Project</h4>
+                            <p>Open the app and tap "Add New Project" to get started</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Add a Device</h4>
+                            <p>Connect your ESP32, Arduino, or Raspberry Pi</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Build Your Dashboard</h4>
+                            <p>Add widgets to control and monitor your device</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-list">
+                    <h3>What you can do with {PRODUCT_NAME}:</h3>
+                    
+                    <div class="feature-item">
+                        <span class="feature-icon">📱</span>
+                        <span class="feature-text">Control devices from anywhere in the world</span>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <span class="feature-icon">📊</span>
+                        <span class="feature-text">Monitor sensors and visualize data in real-time</span>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <span class="feature-icon">🔔</span>
+                        <span class="feature-text">Receive push notifications when events occur</span>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <span class="feature-icon">⚡</span>
+                        <span class="feature-text">Create automations with timers and triggers</span>
+                    </div>
+                </div>
+                
+                <p style="text-align: center;">
+                    <a href="https://plynx.cc/docs/getting-started" class="btn-primary">Get Started Guide</a>
+                </p>
+                
+                <p class="note">Need help? Check our <a href="https://plynx.cc/docs" style="color: #00C9A7;">documentation</a> or contact us at <a href="mailto:support@plynx.cc" style="color: #00C9A7;">support@plynx.cc</a>. We're here to help you succeed!</p>
+            </div>
+            
+            <div class="email-footer">
+                <p class="footer-text">© 2025 {PRODUCT_NAME}. All rights reserved.</p>
+                <p class="footer-links">
+                    <a href="https://plynx.cc">Website</a> •
+                    <a href="https://plynx.cc/docs">Documentation</a> •
+                    <a href="https://plynx.cc/support">Support</a>
+                </p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
