@@ -10,6 +10,7 @@ import cc.blynk.server.notifications.mail.MailWrapper;
 import cc.blynk.server.workers.timer.TimerWorker;
 import cc.blynk.utils.AppNameUtil;
 import cc.blynk.utils.StringUtils;
+import cc.blynk.utils.properties.Placeholders;
 import cc.blynk.utils.validators.BlynkEmailValidator;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -45,6 +46,7 @@ public class MobileRegisterHandler extends SimpleChannelInboundHandler<RegisterM
     private final MailWrapper mailWrapper;
     private final BlockingIOProcessor blockingIOProcessor;
     private final LimitChecker registrationLimitChecker;
+    private final String emailSubject;
     private final String emailBody;
 
     public MobileRegisterHandler(Holder holder) {
@@ -54,7 +56,10 @@ public class MobileRegisterHandler extends SimpleChannelInboundHandler<RegisterM
         this.mailWrapper = holder.mailWrapper;
         this.blockingIOProcessor = holder.blockingIOProcessor;
         this.registrationLimitChecker = new LimitChecker(holder.limits.hourlyRegistrationsLimit, 3_600_000L);
-        this.emailBody = holder.textHolder.registerEmailTemplate;
+        String productName = holder.props.productName;
+        this.emailSubject = "Welcome to " + productName + "!";
+        this.emailBody = holder.textHolder.registerEmailTemplate
+            .replace(Placeholders.PRODUCT_NAME, productName);
     }
 
     @Override
@@ -99,7 +104,7 @@ public class MobileRegisterHandler extends SimpleChannelInboundHandler<RegisterM
         if (AppNameUtil.BLYNK.equals(appName) || "Plynx".equalsIgnoreCase(appName)) {
             blockingIOProcessor.execute(() -> {
                 try {
-                    mailWrapper.sendHtml(email, "Welcome to Plynx!", emailBody);
+                    mailWrapper.sendHtml(email, emailSubject, emailBody);
                 } catch (Exception e) {
                     log.warn("Error sending greeting email for {}.", email);
                 }
