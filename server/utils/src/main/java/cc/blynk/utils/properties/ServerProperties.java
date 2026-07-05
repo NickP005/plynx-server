@@ -5,6 +5,7 @@ import cc.blynk.utils.IPUtils;
 import cc.blynk.utils.JarUtil;
 
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -28,6 +29,7 @@ public class ServerProperties extends BaseProperties {
     public final String productName;
     public final String region;
     public final String host;
+    public final Map<String, String> appNameAliases;
 
     public ServerProperties(Map<String, String> cmdProperties, String serverConfig) {
         super(cmdProperties, serverConfig);
@@ -36,6 +38,7 @@ public class ServerProperties extends BaseProperties {
         this.productName = getProductName();
         this.region = getRegion();
         this.host = getServerHost();
+        this.appNameAliases = parseAppNameAliases();
     }
 
     public ServerProperties(Map<String, String> cmdProperties) {
@@ -48,6 +51,31 @@ public class ServerProperties extends BaseProperties {
 
     private String getProductName() {
         return getProperty("product.name", AppNameUtil.BLYNK);
+    }
+
+    /**
+     * Parses the optional "app.name.aliases" property.
+     * Format: "ClientAppName:FallbackAppName[,More:Pairs]", for instance "Plynx:Blynk".
+     * Keys and values are matched exactly (case-sensitive). Empty or absent property
+     * results in an empty map, which means bit-identical legacy behavior.
+     */
+    private Map<String, String> parseAppNameAliases() {
+        String raw = getProperty("app.name.aliases", "");
+        if (raw == null || raw.trim().isEmpty()) {
+            return Map.of();
+        }
+        Map<String, String> aliases = new HashMap<>();
+        for (String pair : raw.split(",")) {
+            String[] parts = pair.split(":");
+            if (parts.length == 2) {
+                String clientAppName = parts[0].trim();
+                String fallbackAppName = parts[1].trim();
+                if (!clientAppName.isEmpty() && !fallbackAppName.isEmpty()) {
+                    aliases.put(clientAppName, fallbackAppName);
+                }
+            }
+        }
+        return Map.copyOf(aliases);
     }
 
     private String getVendorEmail() {

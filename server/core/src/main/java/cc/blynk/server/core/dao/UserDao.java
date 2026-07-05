@@ -36,17 +36,28 @@ public class UserDao {
     public final ConcurrentMap<UserKey, User> users;
     private final String region;
     private final String host;
+    //optional appName alias fallback map: clientAppName -> fallbackAppName. Empty by default.
+    private final Map<String, String> appNameAliases;
 
     public UserDao(ConcurrentMap<UserKey, User> users, String region, String host) {
+        this(users, region, host, Map.of());
+    }
+
+    public UserDao(ConcurrentMap<UserKey, User> users, String region, String host,
+                   Map<String, String> appNameAliases) {
         //reading DB to RAM.
         this.users = users;
         this.region = region;
         this.host = host;
+        this.appNameAliases = appNameAliases == null ? Map.of() : appNameAliases;
         log.info("Region : {}. Host : {}.", region, host);
+        if (!this.appNameAliases.isEmpty()) {
+            log.info("App name aliases enabled : {}.", this.appNameAliases);
+        }
     }
 
     public boolean isUserExists(String name, String appName) {
-        return users.get(new UserKey(name, appName)) != null;
+        return getByName(name, appName) != null;
     }
 
     public boolean isSuperAdminExists() {
@@ -64,11 +75,21 @@ public class UserDao {
     }
 
     public User getByName(String name, String appName) {
-        return users.get(new UserKey(name, appName));
+        User user = users.get(new UserKey(name, appName));
+        if (user == null && appName != null) {
+            //opt-in fallback: a client presenting appName X may fall back to namespace Y
+            //when no exact (email, X) account exists. The returned user keeps its original
+            //appName, so profile files are never renamed and sessions stay consistent.
+            String fallbackAppName = appNameAliases.get(appName);
+            if (fallbackAppName != null) {
+                user = users.get(new UserKey(name, fallbackAppName));
+            }
+        }
+        return user;
     }
 
     public boolean contains(String name, String appName) {
-        return users.containsKey(new UserKey(name, appName));
+        return getByName(name, appName) != null;
     }
 
     //for tests only

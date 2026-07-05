@@ -107,14 +107,16 @@ public class Holder {
         if (restore) {
             try {
                 ConcurrentMap<UserKey, User> allUsers = dbManager.userDBDao.getAllUsers(serverProperties.region);
-                this.userDao = new UserDao(allUsers, serverProperties.region, serverProperties.host);
+                this.userDao = new UserDao(allUsers, serverProperties.region, serverProperties.host,
+                        serverProperties.appNameAliases);
             } catch (Exception e) {
                 System.out.println("Error restoring data from DB!");
                 e.printStackTrace();
                 throw new RuntimeException(e);
             }
         } else {
-            this.userDao = new UserDao(fileManager.deserializeUsers(), serverProperties.region, serverProperties.host);
+            this.userDao = new UserDao(fileManager.deserializeUsers(), serverProperties.region, serverProperties.host,
+                    serverProperties.appNameAliases);
         }
 
         this.tokenManager = new TokenManager(this.userDao.users, dbManager, serverProperties.host);
@@ -168,7 +170,8 @@ public class Holder {
 
         this.fileManager = new FileManager(serverProperties.getDataFolder(), serverProperties.host);
         this.sessionDao = new SessionDao();
-        this.userDao = new UserDao(fileManager.deserializeUsers(), serverProperties.region, serverProperties.host);
+        this.userDao = new UserDao(fileManager.deserializeUsers(), serverProperties.region, serverProperties.host,
+                serverProperties.appNameAliases);
         this.blockingIOProcessor = blockingIOProcessor;
 
         boolean enableDB = serverProperties.isDBEnabled();

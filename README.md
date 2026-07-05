@@ -344,6 +344,10 @@ Available server options:
 + Folder for all application logs. Will be created if it doesn't exist. "." is dir from which you are running script.
 
         logs.folder=./logs
+
++ Optional appName alias fallback (opt-in, empty by default = legacy behavior). Accounts are namespaced by (email, appName); a client presenting appName X normally cannot see accounts created under appName Y. With an alias configured, when no (email, X) account exists the lookup (login, GET_SERVER, registration check, password reset) falls back to namespace Y. Existing accounts and their profile files are never renamed. Format is `ClientAppName:FallbackAppName`, comma-separated for multiple pairs.
+
+        app.name.aliases=Plynx:Blynk
         
 
 + Log debug level. Possible values: trace|debug|info|error. Defines how precise logging will be. From left to right -> maximum logging to minimum
