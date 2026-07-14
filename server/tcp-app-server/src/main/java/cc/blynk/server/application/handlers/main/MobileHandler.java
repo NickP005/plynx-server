@@ -10,6 +10,8 @@ import cc.blynk.server.application.handlers.main.logic.MobileDeleteAccountLogic;
 import cc.blynk.server.application.handlers.main.logic.MobileGetCloneCodeLogic;
 import cc.blynk.server.application.handlers.main.logic.MobileGetEnergyLogic;
 import cc.blynk.server.application.handlers.main.logic.MobileGetServerInfoLogic;
+import cc.blynk.server.application.handlers.main.logic.dashboard.device.MobileLinkDeviceLogic;
+import cc.blynk.server.application.handlers.main.logic.dashboard.device.MobileUnlinkDeviceLogic;
 import cc.blynk.server.application.handlers.main.logic.MobileGetProjectByClonedTokenLogic;
 import cc.blynk.server.application.handlers.main.logic.MobileGetProjectByTokenLogic;
 import cc.blynk.server.application.handlers.main.logic.MobileGetProvisionTokenLogic;
@@ -69,6 +71,8 @@ import static cc.blynk.server.core.protocol.enums.Command.ACTIVATE_DASHBOARD;
 import static cc.blynk.server.core.protocol.enums.Command.ADD_ENERGY;
 import static cc.blynk.server.core.protocol.enums.Command.ADD_PUSH_TOKEN;
 import static cc.blynk.server.core.protocol.enums.Command.GET_SERVER_INFO;
+import static cc.blynk.server.core.protocol.enums.Command.LINK_DEVICE;
+import static cc.blynk.server.core.protocol.enums.Command.UNLINK_DEVICE;
 import static cc.blynk.server.core.protocol.enums.Command.APP_SYNC;
 import static cc.blynk.server.core.protocol.enums.Command.ASSIGN_TOKEN;
 import static cc.blynk.server.core.protocol.enums.Command.CREATE_APP;
@@ -371,6 +375,12 @@ public class MobileHandler extends BaseSimpleChannelInboundHandler<StringMessage
                 break;
             case GET_SERVER_INFO :
                 MobileGetServerInfoLogic.messageReceived(ctx, msg);
+                break;
+            case LINK_DEVICE :
+                MobileLinkDeviceLogic.messageReceived(holder, ctx, state.user, msg);
+                break;
+            case UNLINK_DEVICE :
+                MobileUnlinkDeviceLogic.messageReceived(ctx, state.user, msg);
                 break;
         }
     }

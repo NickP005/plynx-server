@@ -1,6 +1,7 @@
 package cc.blynk.server.application.handlers.main.logic.dashboard;
 
 import cc.blynk.server.Holder;
+import cc.blynk.server.core.model.device.LinkedDevicesUtil;
 import cc.blynk.server.application.handlers.main.auth.MobileStateHolder;
 import cc.blynk.server.core.model.DashBoard;
 import cc.blynk.server.core.model.auth.User;
@@ -31,6 +32,9 @@ public final class MobileDeleteDashLogic {
         var dashId = Integer.parseInt(message.body);
 
         deleteDash(holder, state, dashId);
+        //Plynx linked devices: gli alias che puntavano alle schede del
+        //progetto cancellato spariscono dagli altri progetti
+        LinkedDevicesUtil.removeLinksToDash(state.user.profile, dashId);
         state.user.lastModifiedTs = System.currentTimeMillis();
 
         ctx.writeAndFlush(ok(message.id), ctx.voidPromise());

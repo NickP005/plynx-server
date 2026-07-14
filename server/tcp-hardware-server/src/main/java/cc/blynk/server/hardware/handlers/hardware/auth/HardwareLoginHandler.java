@@ -7,6 +7,7 @@ import cc.blynk.server.core.model.DashBoard;
 import cc.blynk.server.core.model.auth.Session;
 import cc.blynk.server.core.model.auth.User;
 import cc.blynk.server.core.model.device.Device;
+import cc.blynk.server.core.model.device.LinkedDevicesUtil;
 import cc.blynk.server.core.protocol.model.messages.MessageBase;
 import cc.blynk.server.core.protocol.model.messages.appllication.LoginMessage;
 import cc.blynk.server.core.session.HardwareStateHolder;
@@ -85,6 +86,28 @@ public class HardwareLoginHandler extends SimpleChannelInboundHandler<LoginMessa
         session.sendToApps(HARDWARE_CONNECTED, msgId, dash.id, responseBody);
         log.trace("Connected device id {}, dash id {}", device.id, dash.id);
         device.connected();
+
+        //Plynx linked devices: stato mirror + connected + pin mode dei
+        //progetti che collegano questa scheda
+        LinkedDevicesUtil.mirrorConnected(user.profile, dash.id, device);
+        for (DashBoard linkDash : user.profile.dashBoards) {
+            if (linkDash.id == dash.id) {
+                continue;
+            }
+            for (Device linkDevice : linkDash.devices) {
+                if (linkDevice.linkedToDashId == dash.id && linkDevice.linkedToDeviceId == device.id) {
+                    if (linkDash.isActive) {
+                        session.sendToApps(HARDWARE_CONNECTED, msgId, linkDash.id,
+                                String.valueOf(linkDash.id) + DEVICE_SEPARATOR + linkDevice.id);
+                        String linkPM = linkDash.buildPMMessage(linkDevice.id);
+                        if (linkPM != null) {
+                            channel.write(makeASCIIStringMessage(HARDWARE, HARDWARE_PIN_MODE_MSG_ID, linkPM));
+                        }
+                    }
+                }
+            }
+        }
+        channel.flush();
         if (device.firstConnectTime == 0) {
             device.firstConnectTime = device.connectTime;
         }

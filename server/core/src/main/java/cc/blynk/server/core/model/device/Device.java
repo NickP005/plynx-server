@@ -58,6 +58,13 @@ public class Device implements Target {
 
     public volatile boolean isUserIcon;
 
+    //Plynx linked devices: se >= 0 questo device e' un alias della scheda
+    //(linkedToDashId, linkedToDeviceId) di un altro progetto: stessa scheda
+    //fisica, nessun token proprio. -1 = device normale.
+    public volatile int linkedToDashId = -1;
+
+    public volatile int linkedToDeviceId = -1;
+
     public Device(int id, String name, BoardType boardType) {
         this.id = id;
         this.name = name;
@@ -69,6 +76,11 @@ public class Device implements Target {
 
     public boolean isNotValid() {
         return boardType == null || (name != null && name.length() > 50);
+    }
+
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    public boolean isLinked() {
+        return linkedToDashId >= 0;
     }
 
     @Override

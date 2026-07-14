@@ -6,6 +6,7 @@ import cc.blynk.server.core.model.DashBoard;
 import cc.blynk.server.core.model.auth.Session;
 import cc.blynk.server.core.model.auth.User;
 import cc.blynk.server.core.model.device.Device;
+import cc.blynk.server.core.model.device.LinkedDevicesUtil;
 import cc.blynk.server.core.protocol.exceptions.IllegalCommandException;
 import cc.blynk.server.core.protocol.model.messages.StringMessage;
 import io.netty.channel.ChannelHandlerContext;
@@ -44,6 +45,11 @@ public final class MobileDeleteDeviceLogic {
         log.debug("Deleting device with id {}.", deviceId);
 
         Device device = user.profile.deleteDevice(dash, deviceId);
+        //Plynx linked devices: la scheda cancellata sparisce anche dai
+        //progetti che la collegavano
+        if (!device.isLinked()) {
+            LinkedDevicesUtil.removeLinksTo(user.profile, dashId, deviceId);
+        }
         user.profile.cleanPinStorageForDevice(deviceId);
         user.profile.deleteDeviceFromTags(dash, deviceId);
         holder.tokenManager.deleteDevice(device);

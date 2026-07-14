@@ -5,6 +5,9 @@ import cc.blynk.server.core.dao.SessionDao;
 import cc.blynk.server.core.model.DashBoard;
 import cc.blynk.server.core.model.auth.Session;
 import cc.blynk.server.core.model.device.Device;
+import cc.blynk.server.core.model.device.LinkedDevicesUtil;
+import cc.blynk.server.core.model.device.Status;
+import cc.blynk.server.core.model.Profile;
 import cc.blynk.server.core.model.device.Status;
 import cc.blynk.server.core.model.widgets.notifications.Notification;
 import cc.blynk.server.notifications.push.GCMWrapper;
@@ -53,6 +56,7 @@ public class HardwareChannelStateHandler extends ChannelInboundHandlerAdapter {
                 log.trace("Hardware channel disconnect for {}, dashId {}, deviceId {}, token {}.",
                         state.userKey, state.dash.id, device.id, device.token);
                 sentOfflineMessage(ctx, session, state.dash, device);
+                notifyLinkedDashes(session, state.user.profile, state.dash, device);
             }
         }
     }
@@ -89,6 +93,27 @@ public class HardwareChannelStateHandler extends ChannelInboundHandlerAdapter {
             sendPushNotification(ctx, session, notification, dashBoard, device);
         } else if (!dashBoard.isNotificationsOff) {
             session.sendOfflineMessageToApps(dashBoard.id, device.id);
+        }
+    }
+
+    //Plynx linked devices: mirror dello stato offline sugli alias + offline
+    //message ai progetti attivi che collegano questa scheda
+    private static void notifyLinkedDashes(Session session, Profile profile,
+                                           DashBoard ownerDash, Device device) {
+        if (device.status != Status.OFFLINE) {
+            //quick reconnect: la scheda risulta gia' di nuovo online
+            return;
+        }
+        LinkedDevicesUtil.mirrorDisconnected(profile, ownerDash.id, device);
+        for (DashBoard linkDash : profile.dashBoards) {
+            if (linkDash.id == ownerDash.id || !linkDash.isActive || linkDash.isNotificationsOff) {
+                continue;
+            }
+            for (Device linkDevice : linkDash.devices) {
+                if (linkDevice.linkedToDashId == ownerDash.id && linkDevice.linkedToDeviceId == device.id) {
+                    session.sendOfflineMessageToApps(linkDash.id, linkDevice.id);
+                }
+            }
         }
     }
 

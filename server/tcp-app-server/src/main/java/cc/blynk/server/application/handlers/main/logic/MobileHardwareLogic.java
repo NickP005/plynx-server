@@ -6,6 +6,8 @@ import cc.blynk.server.core.dao.SessionDao;
 import cc.blynk.server.core.model.DashBoard;
 import cc.blynk.server.core.model.Profile;
 import cc.blynk.server.core.model.auth.Session;
+import cc.blynk.server.core.model.device.Device;
+import cc.blynk.server.core.model.device.LinkedDevicesUtil;
 import cc.blynk.server.core.model.device.Tag;
 import cc.blynk.server.core.model.enums.PinType;
 import cc.blynk.server.core.model.widgets.Target;
@@ -137,8 +139,37 @@ public class MobileHardwareLogic extends BaseProcessorHandler {
                 //sending to shared dashes and master-master apps
                 session.sendToSharedApps(ctx.channel(), dash.sharedToken, APP_SYNC, message.id, message.body);
 
-                if (session.sendMessageToHardware(dashId, HARDWARE, message.id, split[1], deviceIds)
-                        && !dash.isNotificationsOff) {
+                //Plynx linked devices: la scrittura su un alias viaggia sul
+                //canale hardware del progetto proprietario e si riflette
+                //su storage e app del proprietario (+ altri collegati)
+                Device linkAlias = (target instanceof Device && ((Device) target).isLinked())
+                        ? (Device) target : null;
+                boolean noDeviceInSession;
+                if (linkAlias != null) {
+                    DashBoard ownerDash = profile.getDashById(linkAlias.linkedToDashId);
+                    Device owner = ownerDash == null
+                            ? null : profile.getDeviceById(ownerDash, linkAlias.linkedToDeviceId);
+                    if (owner == null) {
+                        log.debug("Dangling linked device {} in dash {}.", linkAlias.id, dashId);
+                        return;
+                    }
+                    profile.update(ownerDash, owner.id, pin, pinType, value, now);
+                    owner.dataReceivedAt = now;
+                    if (ownerDash.isActive) {
+                        session.sendToApps(HARDWARE, message.id, ownerDash.id, owner.id, split[1]);
+                    }
+                    LinkedDevicesUtil.sendToLinkedApps(session, profile, HARDWARE,
+                            message.id, ownerDash.id, owner.id, split[1]);
+                    noDeviceInSession = session.sendMessageToHardware(
+                            ownerDash.id, HARDWARE, message.id, split[1], owner.id);
+                } else {
+                    noDeviceInSession = session.sendMessageToHardware(
+                            dashId, HARDWARE, message.id, split[1], deviceIds);
+                    LinkedDevicesUtil.sendToLinkedApps(session, profile, HARDWARE,
+                            message.id, dashId, targetId, split[1]);
+                }
+
+                if (noDeviceInSession && !dash.isNotificationsOff) {
                     log.debug("No device in session.");
                     ctx.writeAndFlush(deviceNotInNetwork(message.id), ctx.voidPromise());
                 }

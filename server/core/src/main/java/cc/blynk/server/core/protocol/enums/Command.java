@@ -139,6 +139,10 @@ public final class Command {
     //app treats as "legacy server" after a short timeout.
     public static final short GET_SERVER_INFO = 96;
 
+    //Plynx linked devices: alias di una scheda di un altro progetto
+    public static final short LINK_DEVICE = 97;
+    public static final short UNLINK_DEVICE = 98;
+
     //right now we have less than 100 commands
     public static final int LAST_COMMAND_INDEX = 100;
 
@@ -219,6 +223,8 @@ public final class Command {
             Map.entry(RESET_PASSWORD, "resetPass"),
             Map.entry(DELETE_ACCOUNT, "DeleteAccount"),
             Map.entry(GET_SERVER_INFO, "GetServerInfo"),
+            Map.entry(LINK_DEVICE, "LinkDevice"),
+            Map.entry(UNLINK_DEVICE, "UnlinkDevice"),
             Map.entry(HTTP_IS_HARDWARE_CONNECTED, "HttpIsHardwareConnected"),
             Map.entry(HTTP_IS_APP_CONNECTED, "HttpIsAppConnected"),
             Map.entry(HTTP_GET_PIN_DATA, "HttpGetPinData"),

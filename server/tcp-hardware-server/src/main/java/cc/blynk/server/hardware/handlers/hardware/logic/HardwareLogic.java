@@ -8,6 +8,7 @@ import cc.blynk.server.core.model.DashBoard;
 import cc.blynk.server.core.model.auth.Session;
 import cc.blynk.server.core.model.auth.User;
 import cc.blynk.server.core.model.device.Device;
+import cc.blynk.server.core.model.device.LinkedDevicesUtil;
 import cc.blynk.server.core.model.enums.PinType;
 import cc.blynk.server.core.processors.BaseProcessorHandler;
 import cc.blynk.server.core.processors.WebhookProcessor;
@@ -92,6 +93,11 @@ public class HardwareLogic extends BaseProcessorHandler {
             } else {
                 log.trace("No active dashboard.");
             }
+
+            //Plynx linked devices: i progetti che collegano questa scheda
+            //ricevono l'aggiornamento con gli id del loro alias
+            LinkedDevicesUtil.sendToLinkedApps(session, user.profile, HARDWARE,
+                    message.id, dash.id, deviceId, body);
         }
     }
 
