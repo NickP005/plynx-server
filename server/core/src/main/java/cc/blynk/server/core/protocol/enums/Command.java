@@ -134,6 +134,11 @@ public final class Command {
     //account management
     public static final short DELETE_ACCOUNT = 95;
 
+    //capability handshake (Plynx): the app asks version+capabilities after
+    //login; legacy servers have no case for it and stay silent, which the
+    //app treats as "legacy server" after a short timeout.
+    public static final short GET_SERVER_INFO = 96;
+
     //right now we have less than 100 commands
     public static final int LAST_COMMAND_INDEX = 100;
 
@@ -213,6 +218,7 @@ public final class Command {
             Map.entry(EXPORT_REPORT, "exportReport"),
             Map.entry(RESET_PASSWORD, "resetPass"),
             Map.entry(DELETE_ACCOUNT, "DeleteAccount"),
+            Map.entry(GET_SERVER_INFO, "GetServerInfo"),
             Map.entry(HTTP_IS_HARDWARE_CONNECTED, "HttpIsHardwareConnected"),
             Map.entry(HTTP_IS_APP_CONNECTED, "HttpIsAppConnected"),
             Map.entry(HTTP_GET_PIN_DATA, "HttpGetPinData"),
